@@ -57,7 +57,7 @@ public class SplashActivity extends BaseActivity {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					MFGT.gotoLogin(SplashActivity.this);
+					MFGT.gotoGuide(SplashActivity.this);
 					finish();
 				}
 			}
