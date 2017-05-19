@@ -1,15 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splash_root"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/colorPrimary" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/splash_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/colorPrimary" >
 
     <ImageView
         android:id="@+id/iv_splash_logo"
-        android:layout_width="100px"
-        android:layout_height="100px"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_logo" />
 
 </RelativeLayout>
