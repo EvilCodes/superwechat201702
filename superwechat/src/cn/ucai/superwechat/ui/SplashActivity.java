@@ -1,6 +1,5 @@
 package cn.ucai.superwechat.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.hyphenate.chat.EMClient;
@@ -8,6 +7,7 @@ import com.hyphenate.util.EasyUtils;
 
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.utils.MFGT;
 
 /**
  * 开屏页
@@ -49,7 +49,7 @@ public class SplashActivity extends BaseActivity {
 						// avoid main screen overlap Calling Activity
 					} else {
 						//enter main screen
-						startActivity(new Intent(SplashActivity.this, MainActivity.class));
+						MFGT.gotoMain(SplashActivity.this);
 					}
 					finish();
 				}else {
@@ -57,12 +57,12 @@ public class SplashActivity extends BaseActivity {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+					MFGT.gotoLogin(SplashActivity.this);
 					finish();
 				}
 			}
 		}).start();
 
 	}
-	
+
 }
