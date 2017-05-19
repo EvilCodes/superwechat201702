@@ -16,6 +16,11 @@ import cn.ucai.superwechat.ui.RegisterActivity;
 
 public class MFGT {
 
+    public static void finish(Activity activity){
+        activity.finish();
+        activity.overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
+    }
+
     private static void startActivity(Context context, Class clazz){
         context.startActivity(new Intent(context, clazz));
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
