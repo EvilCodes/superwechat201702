@@ -29,9 +29,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.data.OnCompleteListener;
+import cn.ucai.superwechat.data.Result;
+import cn.ucai.superwechat.data.net.IUserModel;
+import cn.ucai.superwechat.data.net.UserModel;
+import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.MD5;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 /**
  * register screen
@@ -53,12 +62,14 @@ public class RegisterActivity extends BaseActivity {
     Unbinder bind;
     String username,nickname,password;
     ProgressDialog pd;
+    IUserModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_register);
         bind = ButterKnife.bind(this);
+        model = new UserModel();
     }
 
     @OnClick(R.id.btn_register)
@@ -66,6 +77,8 @@ public class RegisterActivity extends BaseActivity {
         initDialog();
         if (checkInput()){
             registerApp();
+        }else{
+            dismissDialog();
         }
     }
 
@@ -82,7 +95,36 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void registerApp() {
+        model.register(RegisterActivity.this, username, nickname, MD5.getMessageDigest(password),
+                new OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        boolean isSuccess = true;
+                        if (s!=null){
+                            Result result = ResultUtils.getResultFromJson(s, null);
+                            if (result!=null){
+                                if (result.getRetCode() == I.MSG_REGISTER_USERNAME_EXISTS){
+                                    CommonUtils.showShortToast(R.string.User_already_exists);
+                                }else if (result.getRetCode() == I.MSG_REGISTER_FAIL) {
+                                    CommonUtils.showShortToast(R.string.Registration_failed);
+                                }else if(result.isRetMsg()){
+                                    isSuccess = false;
+                                    registerEMApp();
+                                }
+                            }
+                            if (isSuccess){
+                                dismissDialog();
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onError(String error) {
+                        dismissDialog();
+                        CommonUtils.showShortToast(R.string.Registration_failed);
+                        L.e("registerApp,onError="+error);
+                    }
+                });
     }
 
     private void registerEMApp(){
@@ -90,7 +132,7 @@ public class RegisterActivity extends BaseActivity {
             public void run() {
                 try {
                     // call method in SDK
-                    EMClient.getInstance().createAccount(username, password);
+                    EMClient.getInstance().createAccount(username, MD5.getMessageDigest(password));
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())
@@ -102,6 +144,7 @@ public class RegisterActivity extends BaseActivity {
                         }
                     });
                 } catch (final HyphenateException e) {
+                    unRegisterApp();
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())
@@ -123,6 +166,20 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         }).start();
+    }
+
+    private void unRegisterApp() {
+        model.unRegister(RegisterActivity.this, username, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                L.e("unRegisterApp,result="+result);
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e("unRegisterApp,error="+error);
+            }
+        });
     }
 
     private boolean checkInput() {
