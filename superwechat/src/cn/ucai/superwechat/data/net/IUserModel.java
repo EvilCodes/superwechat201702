@@ -13,4 +13,6 @@ public interface IUserModel {
                   OnCompleteListener<String> listener);
 
     void unRegister(Context context, String username, OnCompleteListener<String> listener);
+
+    void loadUserInfo(Context context,String username,OnCompleteListener<String> listener);
 }
