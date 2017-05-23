@@ -29,6 +29,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -60,11 +61,13 @@ import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
 import cn.ucai.superwechat.runtimepermissions.PermissionsResultAction;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.widget.DMTabHost;
 import cn.ucai.superwechat.widget.MFViewPager;
 
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener,
+        DMTabHost.OnCheckedChangeListener {
 
     protected static final String TAG = "MainActivity";
     @BindView(R.id.layout_viewpage)
@@ -138,6 +141,8 @@ public class MainActivity extends BaseActivity {
         adapter.addFragment(settingFragment,getString(R.string.me));
         mLayoutViewpage.setAdapter(adapter);
         mLayoutTabhost.setChecked(0);
+        mLayoutViewpage.setOnPageChangeListener(this);
+        mLayoutTabhost.setOnCheckedChangeListener(this);
 //        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
 //                .add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
 //                .commit();
@@ -333,6 +338,24 @@ public class MainActivity extends BaseActivity {
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mLayoutTabhost.setChecked(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public void onCheckedChange(int checkedPosition, boolean byUser) {
+        mLayoutViewpage.setCurrentItem(checkedPosition,false);
     }
 
     public class MyContactListener implements EMContactListener {
