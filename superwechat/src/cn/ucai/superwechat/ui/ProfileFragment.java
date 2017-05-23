@@ -72,6 +72,7 @@ public class ProfileFragment extends EaseBaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_profile_view:
+                MFGT.gotoProfile(getActivity());
                 startActivity(new Intent(getActivity(), UserProfileActivity.class).putExtra("setting", true)
                         .putExtra("username", EMClient.getInstance().getCurrentUser()));
                 break;
