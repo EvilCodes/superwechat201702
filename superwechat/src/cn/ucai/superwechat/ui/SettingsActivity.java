@@ -35,6 +35,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.util.EMLog;
 
 import java.io.File;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.SuperWeChatModel;
+import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.PreferenceManager;
 
 /**
@@ -165,6 +167,14 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		llDiagnose=(LinearLayout) findViewById(R.id.ll_diagnose);
 		pushNick=(LinearLayout) findViewById(R.id.ll_set_push_nick);
 		edit_custom_appkey = (EditText) findViewById(R.id.edit_custom_appkey);
+		EaseTitleBar titleBar = (EaseTitleBar) findViewById(R.id.title_bar);
+		titleBar.setLeftLayoutClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MFGT.finish(SettingsActivity.this);
+			}
+		});
+		hideSoftKeyboard();
 
 		settingsModel = SuperWeChatHelper.getInstance().getModel();
 		chatOptions = EMClient.getInstance().getOptions();
