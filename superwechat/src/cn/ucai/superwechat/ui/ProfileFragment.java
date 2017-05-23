@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.easemob.redpacketui.utils.RPRedPacketUtil;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseBaseFragment;
 
@@ -71,7 +72,13 @@ public class ProfileFragment extends EaseBaseFragment {
             case R.id.layout_profile_view:
                 break;
             case R.id.tv_profile_money:
+                //red packet code : 进入零钱或红包记录页面
+                //支付宝版红包SDK调用如下方法进入红包记录页面
+                RPRedPacketUtil.getInstance().startRecordActivity(getActivity());
+                //钱包版红包SDK调用如下方法进入零钱页面
+//				RPRedPacketUtil.getInstance().startChangeActivity(SettingsActivity.this);
                 break;
+            //end of red packet code
             case R.id.tv_profile_settings:
                 MFGT.gotoSettings(getActivity());
                 break;

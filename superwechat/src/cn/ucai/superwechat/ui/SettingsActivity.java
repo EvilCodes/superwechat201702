@@ -30,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.redpacketui.utils.RPRedPacketUtil;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -151,7 +150,6 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		switch_delete_msg_when_exit_group = (EaseSwitchButton) findViewById(R.id.switch_delete_msg_when_exit_group);
 		switch_auto_accept_group_invitation = (EaseSwitchButton) findViewById(R.id.switch_auto_accept_group_invitation);
 		switch_adaptive_video_encode = (EaseSwitchButton) findViewById(R.id.switch_adaptive_video_encode);
-		LinearLayout llChange = (LinearLayout) findViewById(R.id.ll_change);
 		logoutBtn = (Button) findViewById(R.id.btn_logout);
 		if(!TextUtils.isEmpty(EMClient.getInstance().getCurrentUser())){
 			logoutBtn.setText(getString(R.string.button_logout) + "(" + EMClient.getInstance().getCurrentUser() + ")");
@@ -197,7 +195,6 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		rl_switch_adaptive_video_encode.setOnClickListener(this);
 		rl_push_settings.setOnClickListener(this);
 		ll_call_option.setOnClickListener(this);
-		llChange.setOnClickListener(this);
 		rl_mail_log.setOnClickListener(this);
 
 		// the vibrate and sound notification are allowed or not?
@@ -286,14 +283,6 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			//red packet code : 进入零钱或红包记录页面
-			case R.id.ll_change:
-				//支付宝版红包SDK调用如下方法进入红包记录页面
-				RPRedPacketUtil.getInstance().startRecordActivity(SettingsActivity.this);
-				//钱包版红包SDK调用如下方法进入零钱页面
-//				RPRedPacketUtil.getInstance().startChangeActivity(SettingsActivity.this);
-				break;
-			//end of red packet code
 			case R.id.rl_switch_notification:
 				if (notifySwitch.isSwitchOpen()) {
 					notifySwitch.closeSwitch();
