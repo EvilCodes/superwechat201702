@@ -127,16 +127,17 @@ public class MainActivity extends BaseActivity {
     private void initFragment() {
         conversationListFragment = new ConversationListFragment();
         contactListFragment = new ContactListFragment();
+        discoverFragment = new DiscoverFragment();
         SettingsFragment settingFragment = new SettingsFragment();
         fragments = new Fragment[]{conversationListFragment, contactListFragment, settingFragment};
 
         adapter = new MainTabAdpter(getSupportFragmentManager());
         adapter.addFragment(conversationListFragment,getString(R.string.app_name));
         adapter.addFragment(contactListFragment,getString(R.string.contacts));
-        adapter.addFragment(settingFragment,getString(R.string.discover));
+        adapter.addFragment(discoverFragment,getString(R.string.discover));
         adapter.addFragment(settingFragment,getString(R.string.me));
         mLayoutViewpage.setAdapter(adapter);
-
+        mLayoutTabhost.setChecked(0);
 //        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
 //                .add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
 //                .commit();
@@ -495,6 +496,7 @@ public class MainActivity extends BaseActivity {
     private boolean isExceptionDialogShow = false;
     private BroadcastReceiver internalDebugReceiver;
     private ConversationListFragment conversationListFragment;
+    private DiscoverFragment discoverFragment;
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
 
