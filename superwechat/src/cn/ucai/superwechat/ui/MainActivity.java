@@ -61,7 +61,6 @@ import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
 import cn.ucai.superwechat.runtimepermissions.PermissionsResultAction;
-import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.widget.DMTabHost;
 import cn.ucai.superwechat.widget.MFViewPager;
 
@@ -131,14 +130,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         conversationListFragment = new ConversationListFragment();
         contactListFragment = new ContactListFragment();
         discoverFragment = new DiscoverFragment();
-        SettingsFragment settingFragment = new SettingsFragment();
-        fragments = new Fragment[]{conversationListFragment, contactListFragment, settingFragment};
+//        SettingsFragment settingFragment = new SettingsFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
+        fragments = new Fragment[]{conversationListFragment, contactListFragment, discoverFragment, profileFragment};
 
         adapter = new MainTabAdpter(getSupportFragmentManager());
         adapter.addFragment(conversationListFragment,getString(R.string.app_name));
         adapter.addFragment(contactListFragment,getString(R.string.contacts));
         adapter.addFragment(discoverFragment,getString(R.string.discover));
-        adapter.addFragment(settingFragment,getString(R.string.me));
+        adapter.addFragment(profileFragment,getString(R.string.me));
         mLayoutViewpage.setAdapter(adapter);
         mLayoutTabhost.setChecked(0);
         mLayoutViewpage.setOnPageChangeListener(this);
