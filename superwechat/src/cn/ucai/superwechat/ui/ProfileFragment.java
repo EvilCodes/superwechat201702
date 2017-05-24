@@ -2,17 +2,16 @@ package cn.ucai.superwechat.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.easemob.redpacketui.utils.RPRedPacketUtil;
-import com.hyphenate.easeui.domain.User;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.ui.EaseBaseFragment;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +19,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.utils.MFGT;
 
 /**
@@ -54,16 +52,6 @@ public class ProfileFragment extends EaseBaseFragment {
     protected void setUpView() {
         titleBar.setRightImageResource(R.drawable.em_add);
         titleBar.setTitle(getString(R.string.me));
-        User user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
-        if (user!=null){
-            mTvProfileNickname.setText(user.getMUserNick());
-            mTvProfileUsername.setText("微信号: " +user.getMUserName());
-            if(!TextUtils.isEmpty(user.getAvatar())){
-                Glide.with(getContext()).load(user.getAvatar()).placeholder(R.drawable.em_default_avatar).into(mIvProfileAvatar);
-            }else{
-                Glide.with(getContext()).load(R.drawable.em_default_avatar).into(mIvProfileAvatar);
-            }
-        }
     }
 
     @OnClick({R.id.layout_profile_view, R.id.tv_profile_money, R.id.tv_profile_settings})
@@ -101,6 +89,21 @@ public class ProfileFragment extends EaseBaseFragment {
             outState.putBoolean("isConflict", true);
         }else if(((MainActivity)getActivity()).getCurrentAccountRemoved()){
             outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
+
+    private void loadUserInfo() {
+        String username = EMClient.getInstance().getCurrentUser();
+        if (username!=null){
+            mTvProfileUsername.setText("微信号: "+username);
+            EaseUserUtils.setAppUserNick(username, mTvProfileNickname);
+            EaseUserUtils.setAppUserAvatar(getContext(), username, mIvProfileAvatar);
         }
     }
 }

@@ -150,7 +150,7 @@ public class UserProfileActivity extends BaseActivity {
                                     CommonUtils.showLongToast(R.string.toast_updatenick_fail);
                                 }else if (result.isRetMsg()){
                                     CommonUtils.showLongToast(R.string.toast_updatenick_success);
-                                    mTvUserinfoName.setText(nickName);
+                                    mTvUserinfoNick.setText(nickName);
                                     SuperWeChatHelper.getInstance().getUserProfileManager().updateCurrentAppUserNickName(nickName);
                                 }
                             }
