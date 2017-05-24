@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -55,11 +54,11 @@ public class UserProfileActivity extends BaseActivity {
     }
 
     private void initListener() {
-        User user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
-        if (user!=null){
-            mTvUserinfoName.setText("微信号: "+EMClient.getInstance().getCurrentUser());
-            EaseUserUtils.setUserNick(user.getMUserName(), mTvUserinfoNick);
-            EaseUserUtils.setUserAvatar(this, user.getMUserName(), mIvUserinfoAvatar);
+        String username = EMClient.getInstance().getCurrentUser();
+        if (username!=null){
+            mTvUserinfoName.setText("微信号: "+username);
+            EaseUserUtils.setAppUserNick(username, mTvUserinfoNick);
+            EaseUserUtils.setAppUserAvatar(this, username, mIvUserinfoAvatar);
 //            asyncFetchUserInfo(user.getMUserName());
         }
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
