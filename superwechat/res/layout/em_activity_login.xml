@@ -2,14 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-    <include android:id="@+id/lr_title" layout="@layout/view_layout_title"/>
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
+        app:titleBarTitle="@string/login"
+        app:titleBarLeftImage="@drawable/icon_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/lr_title"
+        android:layout_below="@+id/title_bar"
         android:padding="12dp" >
         <RelativeLayout
             android:layout_width="match_parent"

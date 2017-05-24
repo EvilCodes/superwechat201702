@@ -23,7 +23,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.widget.EaseTitleBar;
 
 import java.io.ByteArrayOutputStream;
 
@@ -38,8 +37,6 @@ public class UserProfileActivity extends BaseActivity {
 
     private static final int REQUESTCODE_PICK = 1;
     private static final int REQUESTCODE_CUTTING = 2;
-    @BindView(R.id.title_bar)
-    EaseTitleBar titleBar;
     @BindView(R.id.iv_userinfo_avatar)
     ImageView mIvUserinfoAvatar;
     @BindView(R.id.tv_userinfo_nick)
@@ -51,9 +48,9 @@ public class UserProfileActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
         setContentView(R.layout.em_activity_user_profile);
         ButterKnife.bind(this);
+        super.onCreate(arg0);
         initListener();
     }
 

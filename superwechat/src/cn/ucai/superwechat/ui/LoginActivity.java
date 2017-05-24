@@ -26,7 +26,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +49,6 @@ import cn.ucai.superwechat.utils.MD5;
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     public static final int REQUEST_CODE_SETNICK = 1;
-    @BindView(R.id.img_back)
-    ImageView mImgBack;
-    @BindView(R.id.txt_title)
-    TextView mTxtTitle;
     @BindView(R.id.et_username)
     EditText usernameEditText;
     @BindView(R.id.et_password)
@@ -64,6 +59,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.em_activity_login);
+        ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
 
         // enter the main activity if already logged in
@@ -73,8 +70,6 @@ public class LoginActivity extends BaseActivity {
 
             return;
         }
-        setContentView(R.layout.em_activity_login);
-        ButterKnife.bind(this);
         initView();
         setListener();
 
@@ -84,8 +79,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initView() {
-        mImgBack.setVisibility(View.VISIBLE);
-        mTxtTitle.setVisibility(View.VISIBLE);
+        titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setListener() {
