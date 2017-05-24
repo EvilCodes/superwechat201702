@@ -1,15 +1,18 @@
 package cn.ucai.superwechat.parse;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.data.OnCompleteListener;
 import cn.ucai.superwechat.data.Result;
@@ -166,6 +169,36 @@ public class UserProfileManager {
 			setCurrentUserAvatar(avatarUrl);
 		}
 		return avatarUrl;
+	}
+
+	public void uploadAppUserAvatar(File file){
+		model.updateAvatar(appContext, EMClient.getInstance().getCurrentUser(), I.AVATAR_TYPE_USER_PATH,
+				file, new OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						boolean isSuccess = false;
+						if (s!=null){
+							Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+							if (result!=null){
+								if (result.isRetMsg()){
+									User user = result.getRetData();
+									if (user!=null){
+										isSuccess = true;
+										setCurrentAppUserAvatar(user.getAvatar());
+									}
+								}
+							}
+						}
+						appContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_AVATAR)
+						.putExtra(I.RESULT_UPDATE_AVATAR,isSuccess));
+					}
+
+					@Override
+					public void onError(String error) {
+						appContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_AVATAR)
+								.putExtra(I.RESULT_UPDATE_AVATAR,false));
+					}
+				});
 	}
 
 	public void asyncGetCurrentUserInfo() {

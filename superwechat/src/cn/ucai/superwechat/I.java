@@ -2,7 +2,10 @@ package cn.ucai.superwechat;
 
 public interface I {
 
-	public static interface User {
+	String BROADCAST_UPDATE_AVATAR = "cn.ucai.superwechat_broadcast_update_avatar";
+	String RESULT_UPDATE_AVATAR = "cn.ucai.superwechat_broadcast_update_avatar_result";
+
+    public static interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号
 		String PASSWORD 							= 		"m_user_password";				//用户密码
