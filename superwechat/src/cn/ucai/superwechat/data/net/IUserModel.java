@@ -2,6 +2,8 @@ package cn.ucai.superwechat.data.net;
 
 import android.content.Context;
 
+import java.io.File;
+
 import cn.ucai.superwechat.data.OnCompleteListener;
 
 /**
@@ -15,4 +17,10 @@ public interface IUserModel {
     void unRegister(Context context, String username, OnCompleteListener<String> listener);
 
     void loadUserInfo(Context context,String username,OnCompleteListener<String> listener);
+
+    void updateAvatar(Context context, String username, String avatarType,
+                      File file, OnCompleteListener<String> listener);
+
+    void updateNick(Context context,String username,String nickname,
+                    OnCompleteListener<String> listener);
 }
