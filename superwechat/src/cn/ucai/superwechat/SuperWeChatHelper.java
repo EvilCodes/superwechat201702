@@ -87,6 +87,8 @@ public class SuperWeChatHelper {
 
 	private Map<String, EaseUser> contactList;
 
+    private Map<String, User> appContactList;
+
 	private Map<String, RobotUser> robotList;
 
 	private UserProfileManager userProManager;
@@ -847,21 +849,17 @@ public class SuperWeChatHelper {
     private User getAppUserInfo(String username){
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
-        EaseUser user = null;
+        User user = null;
         if(username.equals(EMClient.getInstance().getCurrentUser()))
             return getUserProfileManager().getCurrentAppUserInfo();
-//        user = getContactList().get(username);
-//        if(user == null && getRobotList() != null){
-//            user = getRobotList().get(username);
-//        }
-//
-//        // if user is not in your contacts, set inital letter for him/her
-//        if(user == null){
-//            user = new EaseUser(username);
-//            EaseCommonUtils.setUserInitialLetter(user);
-//        }
-//        return user;
-        return null;
+        user = getAppContactList().get(username);
+
+        // if user is not in your contacts, set inital letter for him/her
+        if(user == null){
+            user = new User(username);
+            EaseCommonUtils.setAppUserInitialLetter(user);
+        }
+        return user;
     }
 	
 	 /**
@@ -1006,6 +1004,16 @@ public class SuperWeChatHelper {
 		
 		contactList = aContactList;
 	}
+    public void setAppContactList(Map<String, User> aContactList) {
+        if(aContactList == null){
+            if (appContactList != null) {
+                appContactList.clear();
+            }
+            return;
+        }
+
+        appContactList = aContactList;
+    }
 	
 	/**
      * save single contact 
@@ -1013,6 +1021,10 @@ public class SuperWeChatHelper {
     public void saveContact(EaseUser user){
     	contactList.put(user.getUsername(), user);
     	demoModel.saveContact(user);
+    }
+    public void saveAppContact(User user){
+        appContactList.put(user.getMUserName(), user);
+        demoModel.saveAppContact(user);
     }
     
     /**
@@ -1031,6 +1043,18 @@ public class SuperWeChatHelper {
         }
         
         return contactList;
+    }
+    public Map<String, User> getAppContactList() {
+        if (isLoggedIn() && appContactList == null) {
+            appContactList = demoModel.getAppContactList();
+        }
+
+        // return a empty non-null object to avoid app crash
+        if(appContactList == null){
+            return new Hashtable<String, User>();
+        }
+
+        return appContactList;
     }
     
     /**
@@ -1075,6 +1099,14 @@ public class SuperWeChatHelper {
          ArrayList<EaseUser> mList = new ArrayList<EaseUser>();
          mList.addAll(contactList.values());
          demoModel.saveContactList(mList);
+    }
+    public void updateAppContactList(List<User> contactInfoList) {
+        for (User u : contactInfoList) {
+            appContactList.put(u.getMUserName(), u);
+        }
+        ArrayList<User> mList = new ArrayList<User>();
+        mList.addAll(appContactList.values());
+        demoModel.saveAppContactList(mList);
     }
 
 	public UserProfileManager getUserProfileManager() {

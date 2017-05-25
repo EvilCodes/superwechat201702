@@ -56,7 +56,7 @@ public class ProfileActivity extends BaseActivity {
         mTvUserinfoName.setText(user.getMUserName());
         EaseUserUtils.setAppUserNick(user,mTvUserinfoNick);
         EaseUserUtils.setAppUserAvatar(ProfileActivity.this,user,mProfileImage);
-        showButton(SuperWeChatHelper.getInstance().getContactList().containsKey(user.getMUserName()));
+        showButton(SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName()));
     }
 
     private void showButton(boolean isContact) {
