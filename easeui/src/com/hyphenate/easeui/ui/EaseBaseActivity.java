@@ -63,6 +63,22 @@ public class EaseBaseActivity extends FragmentActivity {
         }
     }
 
+    public void showLeftBack(){
+        if (titleBar!=null){
+            if (titleBar.getLeftImage()){
+                titleBar.getLeftLayout().setEnabled(true);
+                titleBar.getLeftLayout().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+            }else{
+                titleBar.getLeftLayout().setEnabled(false);
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -41,6 +41,7 @@ public class ProfileActivity extends BaseActivity {
         ButterKnife.bind(this);
         super.onCreate(arg0);
         initData();
+        showLeftBack();
     }
 
     private void initData() {
