@@ -6,9 +6,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,20 +54,8 @@ public class ProfileActivity extends BaseActivity {
 
     private void showInfo() {
         mTvUserinfoName.setText(user.getMUserName());
-        mTvUserinfoNick.setText(user.getMUserNick()==null?user.getMUserName():user.getMUserNick());
-        if(user != null && user.getAvatar() != null){
-            try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
-                Glide.with(ProfileActivity.this).load(avatarResId).into(mProfileImage);
-            } catch (Exception e) {
-                //use default avatar
-                Glide.with(ProfileActivity.this).load(user.getAvatar())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(R.drawable.ease_default_avatar).into(mProfileImage);
-            }
-        }else{
-            Glide.with(ProfileActivity.this).load(R.drawable.ease_default_avatar).into(mProfileImage);
-        }
+        EaseUserUtils.setAppUserNick(user,mTvUserinfoNick);
+        EaseUserUtils.setAppUserAvatar(ProfileActivity.this,user,mProfileImage);
         showButton(SuperWeChatHelper.getInstance().getContactList().containsKey(user.getMUserName()));
     }
 
