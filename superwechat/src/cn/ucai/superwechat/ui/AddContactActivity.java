@@ -29,6 +29,7 @@ import cn.ucai.superwechat.data.Result;
 import cn.ucai.superwechat.data.net.IUserModel;
 import cn.ucai.superwechat.data.net.UserModel;
 import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
 
 public class AddContactActivity extends BaseActivity{
@@ -57,6 +58,12 @@ public class AddContactActivity extends BaseActivity{
 			@Override
 			public void onClick(View v) {
 				searchContact();
+			}
+		});
+		titleBar.getLeftLayout().setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MFGT.finish(AddContactActivity.this);
 			}
 		});
 	}
@@ -93,31 +100,32 @@ public class AddContactActivity extends BaseActivity{
 					@Override
 					public void onSuccess(String s) {
 						boolean isSuccess = false;
+						User user = null;
 						if (s!=null){
 							Result<User> result = ResultUtils.getResultFromJson(s, User.class);
 							if (result!=null && result.isRetMsg()){
-								User user = result.getRetData();
+								user = result.getRetData();
 								L.e(TAG,"searchContactFromAppServer,user="+user);
 								if (user!=null){
 									isSuccess = true;
 								}
 							}
 						}
-						showSearchResult(isSuccess);
+						showSearchResult(isSuccess,user);
 					}
 
 					@Override
 					public void onError(String error) {
-						showSearchResult(false);
+						showSearchResult(false,null);
 					}
 				});
 	}
 
-	private void showSearchResult(boolean isSuccess) {
+	private void showSearchResult(boolean isSuccess,User user) {
 		dismissDialog();
 		searchedUserLayout.setVisibility(isSuccess?View.GONE:View.VISIBLE);
-		if (isSuccess){
-
+		if (isSuccess && user!=null){
+			MFGT.gotoProfile(AddContactActivity.this,user);
 		}
 	}
 
