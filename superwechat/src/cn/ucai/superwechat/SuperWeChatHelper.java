@@ -738,18 +738,7 @@ public class SuperWeChatHelper {
         @Override
         public void onContactAdded(String username) {
             L.e(TAG,"MyContactListener,onContactAdded,username="+username);
-            // save contact
-            Map<String, EaseUser> localUsers = getContactList();
-            Map<String, EaseUser> toAddUsers = new HashMap<String, EaseUser>();
-            EaseUser user = new EaseUser(username);
-
-            if (!localUsers.containsKey(username)) {
-                userDao.saveContact(user);
-            }
-            toAddUsers.put(username, user);
-            localUsers.putAll(toAddUsers);
-
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            contactAddToApp(username);
         }
 
         @Override
@@ -813,7 +802,45 @@ public class SuperWeChatHelper {
             Log.d(username, username + " refused to your request");
         }
     }
-    
+
+    private void contactAddToApp(String username) {
+        model.addContact(appContext, EMClient.getInstance().getCurrentUser(), username,
+                new OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s!=null){
+                            Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result!=null && result.isRetMsg()){
+                                User user = result.getRetData();
+                                if (user!=null){
+                                    saveContact2DB(user);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+    }
+
+    private void saveContact2DB(User user) {
+
+        // save contact
+        Map<String, User> localUsers = getAppContactList();
+        Map<String, User> toAddUsers = new HashMap<String, User>();
+
+        if (!localUsers.containsKey(user.getMUserName())) {
+            userDao.saveAppContact(user);
+        }
+        toAddUsers.put(user.getMUserName(), user);
+        localUsers.putAll(toAddUsers);
+
+        broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+    }
+
     /**
      * save and notify invitation message
      * @param msg

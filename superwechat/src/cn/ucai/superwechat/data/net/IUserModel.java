@@ -23,4 +23,6 @@ public interface IUserModel {
 
     void updateNick(Context context,String username,String nickname,
                     OnCompleteListener<String> listener);
+
+    void addContact(Context context,String username,String cname,OnCompleteListener<String> listener);
 }
