@@ -1,5 +1,6 @@
 package cn.ucai.superwechat.ui;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +12,11 @@ import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.utils.MFGT;
 
 /**
  * Created by clawpo on 2017/5/25.
@@ -64,4 +67,12 @@ public class ProfileActivity extends BaseActivity {
         mBtnSendMsg.setVisibility(isContact?View.VISIBLE:View.GONE);
         mBtnSendVideo.setVisibility(isContact?View.VISIBLE:View.GONE);
     }
+
+    @OnClick(R.id.btn_add_contact)
+    public void sendAddContactMsg(){
+        MFGT.gotoSendMsg(ProfileActivity.this,user.getMUserName());
+    }
+
+
+
 }

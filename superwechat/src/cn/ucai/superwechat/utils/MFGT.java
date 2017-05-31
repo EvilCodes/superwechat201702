@@ -13,6 +13,7 @@ import cn.ucai.superwechat.ui.LoginActivity;
 import cn.ucai.superwechat.ui.MainActivity;
 import cn.ucai.superwechat.ui.ProfileActivity;
 import cn.ucai.superwechat.ui.RegisterActivity;
+import cn.ucai.superwechat.ui.SendAddContactActivity;
 import cn.ucai.superwechat.ui.SettingsActivity;
 import cn.ucai.superwechat.ui.UserProfileActivity;
 
@@ -69,5 +70,10 @@ public class MFGT {
     public static void gotoProfile(Activity activity, User user) {
         startActivity(activity,new Intent(activity, ProfileActivity.class)
         .putExtra(I.User.TABLE_NAME,user));
+    }
+
+    public static void gotoSendMsg(Activity activity, String userName) {
+        startActivity(activity,new Intent(activity, SendAddContactActivity.class)
+                .putExtra(I.User.USER_NAME,userName));
     }
 }

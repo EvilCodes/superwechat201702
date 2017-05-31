@@ -278,6 +278,10 @@
             android:name=".ui.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
+        <activity
+            android:name=".ui.SendAddContactActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
         <activity android:name=".ui.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"/>
