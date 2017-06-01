@@ -258,10 +258,11 @@ public class ContactListFragment extends EaseContactListFragment {
                 new OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
+                        L.e(TAG,"deleteAppContact,s="+s);
                         boolean isSuccess = false;
                         if (s!=null){
                             Result result = ResultUtils.getResultFromJson(s, null);
-                            if (result!=null && result.isRetMsg()){
+                            if (result!=null){
                                 isSuccess = true;
                                 // remove user from memory and database
                                 UserDao dao = new UserDao(getActivity());
@@ -277,6 +278,7 @@ public class ContactListFragment extends EaseContactListFragment {
 
                     @Override
                     public void onError(String error) {
+                        L.e(TAG,"onError,error="+error);
                         pd.dismiss();
                     }
                 });
