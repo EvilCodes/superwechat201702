@@ -17,13 +17,17 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMMessage;
-import cn.ucai.superwechat.Constant;
-import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.db.InviteMessgeDao;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.easeui.widget.EaseConversationList.EaseConversationListHelper;
 import com.hyphenate.util.NetUtils;
+
+import cn.ucai.superwechat.Constant;
+import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.db.InviteMessgeDao;
+import cn.ucai.superwechat.utils.L;
+
+import static com.huawei.android.pushselfshow.richpush.RichPushActivity.TAG;
 
 public class ConversationListFragment extends EaseConversationListFragment{
 
@@ -112,6 +116,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        L.e(TAG,"onContextItemSelected,item="+item.getItemId());
         boolean deleteMessage = false;
         if (item.getItemId() == R.id.delete_message) {
             deleteMessage = true;
