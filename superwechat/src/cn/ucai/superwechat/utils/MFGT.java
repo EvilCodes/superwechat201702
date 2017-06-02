@@ -3,11 +3,14 @@ package cn.ucai.superwechat.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.ui.ChatActivity;
 import cn.ucai.superwechat.ui.GuideActivity;
 import cn.ucai.superwechat.ui.LoginActivity;
 import cn.ucai.superwechat.ui.MainActivity;
@@ -16,6 +19,7 @@ import cn.ucai.superwechat.ui.RegisterActivity;
 import cn.ucai.superwechat.ui.SendAddContactActivity;
 import cn.ucai.superwechat.ui.SettingsActivity;
 import cn.ucai.superwechat.ui.UserProfileActivity;
+import cn.ucai.superwechat.ui.VideoCallActivity;
 
 /**
  * Created by clawpo on 2017/5/19.
@@ -80,5 +84,20 @@ public class MFGT {
     public static void gotoSendMsg(Activity activity, String userName) {
         startActivity(activity,new Intent(activity, SendAddContactActivity.class)
                 .putExtra(I.User.USER_NAME,userName));
+    }
+
+    public static void gotoChat(Activity activity, String username) {
+        startActivity(activity, new Intent(activity, ChatActivity.class)
+                .putExtra("userId", username));
+    }
+
+    public static void gotoVideo(Activity activity, String username) {
+        if (!EMClient.getInstance().isConnected())
+            Toast.makeText(activity, R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
+        else {
+            startActivity(activity,new Intent(activity, VideoCallActivity.class)
+                    .putExtra("username", username)
+                    .putExtra("isComingCall", false));
+        }
     }
 }

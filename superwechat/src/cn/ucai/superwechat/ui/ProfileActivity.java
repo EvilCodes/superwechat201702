@@ -78,6 +78,14 @@ public class ProfileActivity extends BaseActivity {
         MFGT.gotoSendMsg(ProfileActivity.this,user.getMUserName());
     }
 
+    @OnClick(R.id.btn_send_msg)
+    public void onSendMsg(){
+        MFGT.gotoChat(ProfileActivity.this,user.getMUserName());
+    }
 
+    @OnClick(R.id.btn_send_video)
+    public void onSendVideo(){
+        MFGT.gotoVideo(ProfileActivity.this,user.getMUserName());
+    }
 
 }
