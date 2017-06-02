@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
@@ -22,6 +23,7 @@ import cn.ucai.superwechat.utils.MFGT;
  */
 
 public class ProfileActivity extends BaseActivity {
+    private static final String TAG = "ProfileActivity";
     @BindView(R.id.profile_image)
     ImageView mProfileImage;
     @BindView(R.id.tv_userinfo_nick)
@@ -53,6 +55,9 @@ public class ProfileActivity extends BaseActivity {
         if (user==null){
             user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
         }
+        if (user==null  && username.equals(EMClient.getInstance().getCurrentUser())){
+            user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
+        }
         if (user!=null){
             showInfo();
         }else {
@@ -68,9 +73,11 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void showButton(boolean isContact) {
-        mBtnAddContact.setVisibility(isContact? View.GONE:View.VISIBLE);
-        mBtnSendMsg.setVisibility(isContact?View.VISIBLE:View.GONE);
-        mBtnSendVideo.setVisibility(isContact?View.VISIBLE:View.GONE);
+        if (!user.getMUserName().equals(EMClient.getInstance().getCurrentUser())) {
+            mBtnAddContact.setVisibility(isContact ? View.GONE : View.VISIBLE);
+            mBtnSendMsg.setVisibility(isContact ? View.VISIBLE : View.GONE);
+            mBtnSendVideo.setVisibility(isContact ? View.VISIBLE : View.GONE);
+        }
     }
 
     @OnClick(R.id.btn_add_contact)
