@@ -29,4 +29,7 @@ public interface IUserModel {
     void deleteContact(Context context,String username,String cname,OnCompleteListener<String> listener);
 
     void loadContact(Context context,String username,OnCompleteListener<String> listener);
+
+    void createGroup(Context context,String hxid,String name,String des,String owner,
+                     boolean isPublic,boolean isInviets,File file,OnCompleteListener<String> listener);
 }
