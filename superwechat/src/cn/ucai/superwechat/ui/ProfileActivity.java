@@ -1,6 +1,5 @@
 package cn.ucai.superwechat.ui;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,10 +46,16 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void initData() {
-        user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+        String username = getIntent().getStringExtra(I.User.USER_NAME);
+        if (username!=null){
+            user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+        }
+        if (user==null){
+            user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+        }
         if (user!=null){
             showInfo();
-        }else{
+        }else {
             finish();
         }
     }
