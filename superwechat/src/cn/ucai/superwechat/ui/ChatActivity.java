@@ -3,16 +3,21 @@ package cn.ucai.superwechat.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
+
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.util.EasyUtils;
 
+import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
+import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.MFGT;
+
 /**
- * chat activity，EaseChatFragment was used {@link #EaseChatFragment}
+ * chat activity，EaseChatFragment was used {@link EaseChatFragment}
  *
  */
 public class ChatActivity extends BaseActivity{
+    private static final String TAG = "ChatActivity";
     public static ChatActivity activityInstance;
     private EaseChatFragment chatFragment;
     String toChatUsername;
@@ -53,11 +58,14 @@ public class ChatActivity extends BaseActivity{
     
     @Override
     public void onBackPressed() {
+        L.e(TAG,"onBackPressed..1");
         chatFragment.onBackPressed();
-        if (EasyUtils.isSingleActivity(this)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+        L.e(TAG,"onBackPressed..2,EasyUtils.isSingleActivity(this)="+EasyUtils.isSingleActivity(this));
+//        if (EasyUtils.isSingleActivity(this)) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        }
+        MFGT.gotoMain(ChatActivity.this,true);
     }
     
     public String getToChatUsername(){
