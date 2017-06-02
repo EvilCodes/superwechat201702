@@ -18,25 +18,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import com.easemob.redpacketsdk.RPSendPacketCallback;
-import com.easemob.redpacketsdk.bean.RedPacketInfo;
-import com.easemob.redpacketsdk.constant.RPConstant;
 import com.easemob.redpacket.utils.RedPacketUtil;
 import com.easemob.redpacket.widget.ChatRowRandomPacket;
 import com.easemob.redpacket.widget.ChatRowRedPacket;
 import com.easemob.redpacket.widget.ChatRowRedPacketAck;
+import com.easemob.redpacketsdk.RPSendPacketCallback;
+import com.easemob.redpacketsdk.bean.RedPacketInfo;
+import com.easemob.redpacketsdk.constant.RPConstant;
 import com.easemob.redpacketui.utils.RPRedPacketUtil;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
-import cn.ucai.superwechat.Constant;
-import cn.ucai.superwechat.SuperWeChatHelper;
-import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
-import cn.ucai.superwechat.domain.RobotUser;
-import cn.ucai.superwechat.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentHelper;
@@ -50,6 +44,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
+
+import cn.ucai.superwechat.Constant;
+import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
+import cn.ucai.superwechat.domain.RobotUser;
+import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.widget.ChatRowVoiceCall;
 
 public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHelper{
 
@@ -252,9 +254,10 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     @Override
     public void onAvatarClick(String username) {
         //handling when user click avatar
-        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-        intent.putExtra("username", username);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+//        intent.putExtra("username", username);
+//        startActivity(intent);
+        MFGT.gotoProfile(getActivity(),username);
     }
     
     @Override
