@@ -178,7 +178,7 @@ public class NewGroupActivity extends BaseActivity {
 							option.style = memberCheckbox.isChecked()?EMGroupStyle.EMGroupStylePrivateMemberCanInvite:EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
 						}
 						EMGroup group = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
-						createAppGroup(group);
+						createAppGroup(group,members);
 
 					} catch (final HyphenateException e) {
 						createFaile(e);
@@ -213,7 +213,7 @@ public class NewGroupActivity extends BaseActivity {
 		});
 	}
 
-	private void createAppGroup(EMGroup group) {
+	private void createAppGroup(final EMGroup group,final String[] members) {
 		model.createGroup(NewGroupActivity.this, group.getGroupId(), group.getGroupName(), group.getDescription(),
 				group.getOwner(), group.isPublic(), group.isMemberAllowToInvite(), file,
 				new OnCompleteListener<String>() {
@@ -223,6 +223,43 @@ public class NewGroupActivity extends BaseActivity {
 						if (s!=null){
 							Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
 							if (result!=null && result.isRetMsg()){
+								isSuccess = true;
+							}
+						}
+						if (!isSuccess){
+							createFaile(null);
+						}else{
+							if (members!=null && members.length>0){
+								addGroupMember(members,group.getGroupId());
+							}else{
+								createSuccess();
+							}
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						L.e(TAG,"createAppGroup,onError,error="+error);
+						createFaile(null);
+					}
+				});
+	}
+
+	private void addGroupMember(String[] members, String groupId) {
+		StringBuilder sb = new StringBuilder();
+		for (String member : members) {
+			sb.append(member);
+			sb.append(",");
+		}
+		model.addGroupMembers(NewGroupActivity.this, sb.toString(), groupId,
+				new OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						L.e(TAG,"addGroupMembers,s="+s);
+						boolean isSuccess = false;
+						if (s!=null) {
+							Result<Group> result = ResultUtils.getResultFromJson(s, Group.class);
+							if (result != null && result.isRetMsg()) {
 								isSuccess = true;
 								createSuccess();
 							}
@@ -234,7 +271,6 @@ public class NewGroupActivity extends BaseActivity {
 
 					@Override
 					public void onError(String error) {
-						L.e(TAG,"createAppGroup,onError,error="+error);
 						createFaile(null);
 					}
 				});
