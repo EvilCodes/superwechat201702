@@ -75,12 +75,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @BindView(R.id.layout_tabhost)
     DMTabHost mLayoutTabhost;
     MainTabAdpter adapter;
-//    // textview for unread message count
-//    private TextView unreadLabel;
-//    // textview for unread event message
-//    private TextView unreadAddressLable;
 //
-//    private Button[] mTabs;
     private ContactListFragment contactListFragment;
     private Fragment[] fragments;
     private int index;
@@ -109,7 +104,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         // runtime permission for android 6.0, just require all permissions here for simple
         requestPermissions();
 
-        initView();
         initUment();
 
         showExceptionDialogFromIntent(getIntent());
@@ -197,51 +191,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             }
         });
     }
-
-    /**
-     * init views
-     */
-    private void initView() {
-//        unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
-//        unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-//        mTabs = new Button[3];
-//        mTabs[0] = (Button) findViewById(R.id.btn_conversation);
-//        mTabs[1] = (Button) findViewById(R.id.btn_address_list);
-//        mTabs[2] = (Button) findViewById(R.id.btn_setting);
-//        // select first tab
-//        mTabs[0].setSelected(true);
-    }
-
-    /**
-     * on tab clicked
-     *
-     * @param view
-     */
-//    public void onTabClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_conversation:
-//                index = 0;
-//                break;
-//            case R.id.btn_address_list:
-//                index = 1;
-//                break;
-//            case R.id.btn_setting:
-//                index = 2;
-//                break;
-//        }
-//        if (currentTabIndex != index) {
-//            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-//            trx.hide(fragments[currentTabIndex]);
-//            if (!fragments[index].isAdded()) {
-//                trx.add(R.id.fragment_container, fragments[index]);
-//            }
-//            trx.show(fragments[index]).commit();
-//        }
-//        mTabs[currentTabIndex].setSelected(false);
-//        // set current tab selected
-//        mTabs[index].setSelected(true);
-//        currentTabIndex = index;
-//    }
 
     EMMessageListener messageListener = new EMMessageListener() {
 
@@ -420,6 +369,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
      */
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
+        mLayoutTabhost.setUnreadCount(0,count);
 //        if (count > 0) {
 //            unreadLabel.setText(String.valueOf(count));
 //            unreadLabel.setVisibility(View.VISIBLE);
