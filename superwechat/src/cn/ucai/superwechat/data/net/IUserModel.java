@@ -34,4 +34,9 @@ public interface IUserModel {
                      boolean isPublic,boolean isInviets,File file,OnCompleteListener<String> listener);
 
     void addGroupMembers(Context context,String usernames,String hxid,OnCompleteListener<String> listener);
+
+    void updateGroupName(Context context,String groupId,String groupName,OnCompleteListener<String> listener);
+    void addGroupMember(Context context,String hxid,String member,OnCompleteListener<String> listener);
+    void removeGroupMember(Context context,String hxid,String username,OnCompleteListener<String> listener);
+    void removeGroup(Context context,String hxid,OnCompleteListener<String> listener);
 }
