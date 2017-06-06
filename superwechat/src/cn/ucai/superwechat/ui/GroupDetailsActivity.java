@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.utils.MFGT;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -834,11 +835,17 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			button.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					MFGT.gotoProfile(GroupDetailsActivity.this,username);
+				}
+			});
+			button.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
 					if (!isCurrentOwner(group)) {
-						return;
+						return false;
 					}
 					if (username.equals(group.getOwner())) {
-						return;
+						return false;
 					}
 					operationUserId = username;
 					Dialog dialog = createMemberMenuDialog();
@@ -859,6 +866,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					return false;
 				}
 			});
 			return convertView;
@@ -935,12 +943,17 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				} else {
 					id_background.setBackgroundColor(convertView.getResources().getColor(R.color.holo_blue_bright));
 				}
-
 				button.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						MFGT.gotoProfile(GroupDetailsActivity.this,username);
+					}
+				});
+				button.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
 						if (!isCurrentOwner(group) && !isCurrentAdmin(group)) {
-							return;
+							return false;
 						}
 						operationUserId = username;
 						Dialog dialog = createMemberMenuDialog();
@@ -992,6 +1005,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						return false;
 					}
 				});
 			}
