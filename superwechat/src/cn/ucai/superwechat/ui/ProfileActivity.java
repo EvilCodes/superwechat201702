@@ -1,5 +1,6 @@
 package cn.ucai.superwechat.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +14,17 @@ import com.hyphenate.easeui.utils.EaseUserUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.data.OnCompleteListener;
+import cn.ucai.superwechat.data.Result;
+import cn.ucai.superwechat.data.net.IUserModel;
+import cn.ucai.superwechat.data.net.UserModel;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 /**
  * Created by clawpo on 2017/5/25.
@@ -37,32 +45,38 @@ public class ProfileActivity extends BaseActivity {
     @BindView(R.id.btn_send_video)
     Button mBtnSendVideo;
     User user = null;
+    String username;
+    IUserModel model;
 
     @Override
     protected void onCreate(Bundle arg0) {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         super.onCreate(arg0);
+        model = new UserModel();
         initData();
         showLeftBack();
     }
 
     private void initData() {
-        String username = getIntent().getStringExtra(I.User.USER_NAME);
-        if (username!=null){
-            user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+        username = getIntent().getStringExtra(I.User.USER_NAME);
+        user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+        if (username==null && user==null){
+            finish();
+            return;
         }
         if (user==null){
-            user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+            user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
         }
         if (user==null  && username.equals(EMClient.getInstance().getCurrentUser())){
             user = SuperWeChatHelper.getInstance().getUserProfileManager().getCurrentAppUserInfo();
         }
         if (user!=null){
             showInfo();
-        }else {
-            finish();
+        }else{
+            showUser();
         }
+        syncUserInfo();
     }
 
     private void showInfo() {
@@ -93,6 +107,49 @@ public class ProfileActivity extends BaseActivity {
     @OnClick(R.id.btn_send_video)
     public void onSendVideo(){
         MFGT.gotoVideo(ProfileActivity.this,user.getMUserName());
+    }
+
+    private void syncUserInfo(){
+        model.loadUserInfo(ProfileActivity.this, username, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                boolean isSuccess = false;
+                if (s!=null){
+                    Result<User> result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result!=null && result.isRetMsg()){
+                        isSuccess = true;
+                        user = result.getRetData();
+                    }
+                }
+                if (!isSuccess){
+                    showUser();
+                }else{
+                    showInfo();
+                    saveUser2DB();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                showUser();
+            }
+        });
+    }
+
+    private void saveUser2DB() {
+        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(username)) {
+            // save contact
+            UserDao userDao = new UserDao(ProfileActivity.this);
+            userDao.saveAppContact(user);
+            SuperWeChatHelper.getInstance().getAppContactList().put(user.getMUserName(), user);
+            sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+        }
+    }
+
+    private void showUser(){
+        mTvUserinfoName.setText(username);
+        EaseUserUtils.setAppUserNick(username,mTvUserinfoNick);
+        EaseUserUtils.setAppUserAvatar(ProfileActivity.this,username,mProfileImage);
     }
 
 }
